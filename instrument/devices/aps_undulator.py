@@ -15,5 +15,4 @@ logger.info(__file__)
 import apstools.devices
 
 
-undulator = apstools.devices.ApsUndulator("ID45", name="undulator")
-# undulator = apstools.devices.ApsUndulatorDual("ID45", name="undulator")
+undulator = apstools.devices.PlanarUndulator("S12ID:USID:", name="undulator")
