@@ -73,21 +73,64 @@ m6 (!)   h.xn        Slit1H:mXn
 """
 
 __all__ = """
-    slit1
+    guard_slit
 """.split()
 
 import logging
-
-# Choose between alternate interfaces to the same controls:
-from apstools.synApps import Optics2Slit2D_HV
-# from apstools.synApps import Optics2Slit2D_InbOutBotTop
-
+from ophyd import Component, EpicsSignal, MotorBundle, EpicsMotor
 from .. import iconfig
 
 logger = logging.getLogger(__name__)
 logger.info(__file__)
 
-IOC = iconfig.get("GP_IOC_PREFIX", "gp:")
+# Choose between alternate interfaces to the same controls:
+#from apstools.synApps import Optics2Slit2D_HV
+#from apstools.synApps import Optics2Slit2D_InbOutBotTop
+#IOC = iconfig.get("GP_IOC_PREFIX", "gp:")
+#slit1 = Optics2Slit2D_HV(f"{IOC}Slit1", name="slit1")
 
 
-slit1 = Optics2Slit2D_HV(f"{IOC}Slit1", name="slit1")
+class GuardSlitMotor(EpicsMotor):
+    process_record = Component(EpicsSignal, ".PROC", kind="omitted")
+    status_update = Component(EpicsSignal, ".STUP", kind="omitted")
+
+
+class GSlitDevice(MotorBundle):
+    """
+    guard slits
+
+    * aperture: (h_size, v_size)
+    """
+    bot  = Component(GuardSlitMotor, '12idc:m19', labels=("gslit",))
+    inb  = Component(GuardSlitMotor, '12idc:m17', labels=("gslit",))
+    outb = Component(GuardSlitMotor, '12idc:m18', labels=("gslit",))
+    top  = Component(GuardSlitMotor, '12idc:m20', labels=("gslit",))
+   
+    #h_size = Component(EpicsSignal, 'usxLAX:GSlit1H:size')
+    #v_size = Component(EpicsSignal, 'usxLAX:GSlit1V:size')
+    #h_sync_proc = Component(EpicsSignal, 'usxLAX:GSlit1H:sync.PROC')
+    #v_sync_proc = Component(EpicsSignal, 'usxLAX:GSlit1V:sync.PROC')
+
+
+    def set_size(self, *args, h=None, v=None):
+        """move the slits to the specified size"""
+        if h is None:
+            raise ValueError("must define horizontal size")
+        if v is None:
+            raise ValueError("must define vertical size")
+        yield from bps.mv(
+            self.h_size, h,
+            self.v_size, v,
+        )
+
+    def process_motor_records(self):
+        yield from bps.mv(self.top.process_record, 1)
+        yield from bps.mv(self.outb.process_record, 1)
+        yield from bps.sleep(0.05)
+        yield from bps.mv(self.bot.process_record, 1)
+        yield from bps.mv(self.inb.process_record, 1)
+        yield from bps.sleep(0.05)
+
+
+guard_slit = GSlitDevice('', name='guard_slit')
+sd.baseline.append(guard_slit)

@@ -12,7 +12,10 @@ local, custom Device definitions
 from .aps_source import *
 from .aps_undulator import *
 from .monochromator import *
-from .shutter import *
+from .shutters import *
+from .stages import *
+from .scaler import *
+from .struck3820 import *
 
 # from .area_detector import *
 # from .calculation_records import *
