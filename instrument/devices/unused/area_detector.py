@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 logger.info(__file__)
 
-from .. import iconfig
+from ... import iconfig
 from .calculation_records import calcs
 from apstools.devices import AD_plugin_primed
 from apstools.devices import AD_prime_plugin2
