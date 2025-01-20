@@ -1,11 +1,15 @@
-# Bluesky Instrument Template
+# APS 12ide SAXS BlueSky code
 
-**Caution**:  If you will use the bluesky queueserver (QS), note that _every_
-Python file in this directory will be executed when QS starts the RunEngine.
-Don't add extra Python files to this directory.  Instead, put them in `user/` or
-somewhere else.
+**Caution**:  This is under developement and most likely does not work yet at all.
 
-Contains:
+This code will run SAXS instrument at APS sector 12, station ID-E. 
+
+
+
+
+
+
+Notes to keep:
 
 description | item(s)
 --- | ---
