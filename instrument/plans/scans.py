@@ -44,7 +44,7 @@ def scan_sa_x(scan_range,numPoints,countTime, md={}):
     md['plan_name'] = "scan_sa_x"
     logger.info(f"scanning axis: {sample_table.x.name}")
     #axis_start = sample_table.x.position
-    scaler1.select_channels(["ITS"])
+    scaler1.select_channels(["BS"])
     trim_plot_by_name(5)
     stats=SignalStatsCallback()
     yield from lineup2([scaler1],sample_table.x, -scan_range,scan_range,numPoints,nscans=1,signal_stats=stats, md=md)
