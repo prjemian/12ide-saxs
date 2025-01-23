@@ -1,7 +1,10 @@
 """
 configure for data collection in a console session
 """
-%matplotlib qt
+
+import matplotlib
+matplotlib.use('qtagg')
+
 from .session_logs import logger
 
 logger.info(__file__)
