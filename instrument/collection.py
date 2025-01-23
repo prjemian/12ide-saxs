@@ -1,7 +1,7 @@
 """
 configure for data collection in a console session
 """
-
+%matplotlib qt
 from .session_logs import logger
 
 logger.info(__file__)
