@@ -28,7 +28,6 @@ from ..devices import scaler1
 from ..devices.stages import sample_table       
 from ..devices.shutters import mono_shutter, uniblitz_shutter
 from ..devices.monochromator import monochromator
-from ..devices import scaler0
 from ..framework import RE, bec
 from apstools.plans import lineup2
 from apstools.utils import trim_plot_lines
@@ -42,8 +41,8 @@ def scan_sa_x(scan_range,numPoints,countTime, md={}):
     yield from bps.mv(
         mono_shutter, "open",
         uniblitz_shutter, "open",
-        scaler0.preset_time, countTime,
-        scaler0.count_mode, "OneShot",
+        scaler1.preset_time, countTime,
+        scaler1.count_mode, "OneShot",
     )
     md['plan_name'] = "scan_sa_x"
     logger.info(f"scanning axis: {sample_table.x.name}")
@@ -55,9 +54,9 @@ def scan_sa_x(scan_range,numPoints,countTime, md={}):
     #print(stats.report())
     yield from bps.mv(
         uniblitz_shutter, "close",
-        scaler0.count_mode, "AutoCount",
+        scaler1.count_mode, "AutoCount",
     )
-    scaler0.select_channels(None)
+    scaler1.select_channels(None)
     #if stats.analysis.success:
     #yield from bps.mv(terms.USAXS.mr_val_center, m_stage.r.position)
     #logger.info(f"final position: {m_stage.r.position}")
