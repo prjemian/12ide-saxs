@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 logger.info(__file__)
 
 
-from .diagnostics import diagnostics
+#from .diagnostics import diagnostics
 from ophyd import EpicsSignal
 
 
