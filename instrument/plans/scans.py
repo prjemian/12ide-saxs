@@ -7,7 +7,7 @@ NOTE:  Don't use blocking calls here
 
 __all__ = """
     empty_plan
-    scan_sa_x
+    align_sa_x
     """.split()
 
 import logging
@@ -34,15 +34,15 @@ from apstools.callbacks.scan_signal_statistics import SignalStatsCallback
 
 
 
-def scan_sa_x(scan_range,numPoints,countTime, md={}):
+def align_sa_x(scan_range,numPoints,countTime, md={}):
     yield from bps.mv(
         mono_shutter, "open",
         uniblitz_shutter, "open",
         scaler1.preset_time, countTime,
         scaler1.count_mode, "OneShot",
     )
-    md['plan_name'] = "scan_sa_x"
-    logger.info(f"scanning axis: {sample_table.x.name}")
+    md['plan_name'] = "align_sa_x"
+    logger.info(f"Aligning axis: {sample_table.x.name}")
     #axis_start = sample_table.x.position
     scaler1.select_channels(["BS"])
     trim_plot_by_name(5)
