@@ -19,7 +19,6 @@ from apstools.devices import PVPositionerSoftDoneWithStop
 from apstools.utils import run_in_thread
 from ophyd import Component, Device, EpicsSignal, EpicsSignalRO, EpicsMotor
 
-from .emails import email_notices
 from ..framework import sd
 
 
