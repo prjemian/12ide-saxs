@@ -35,30 +35,44 @@ from apstools.callbacks.scan_signal_statistics import SignalStatsCallback
 
 
 def align_sa_x(scan_range,numPoints,countTime, md={}):
+    """ this will align the sample table x axis maximizing the signal from the scaler"""
+    #first make sure we have beam, so open the shutters. Also, at the same time set the scaler to count for countTime seconds
     yield from bps.mv(
         mono_shutter, "open",
         uniblitz_shutter, "open",
         scaler1.preset_time, countTime,
         scaler1.count_mode, "OneShot",
     )
+    #this is for records so we can find it in databroker, so it will have plane_name which we can understand
     md['plan_name'] = "align_sa_x"
     logger.info(f"Aligning axis: {sample_table.x.name}")
+    #not sure anyone cares about logger... but it is here
+    #this lets us do something with where we started, if we care in the future. Commented out now. 
     #axis_start = sample_table.x.position
+    #this is important, select which channel is the detector, in this case it is the beamstop diode
     scaler1.select_channels(["BS"])
+    #this next line will keep plots limited to last 5 scans
     trim_plot_by_name(5)
+    #this is for future use when lineup2 will report back the statistics. We need to create this object for use in the future. 
     stats=SignalStatsCallback()
+    #this is the plan itself. It will scan the sample table x axis from -scan_range to scan_range in numPoints steps.
     yield from lineup2([scaler1],sample_table.x, -scan_range,scan_range,numPoints,nscans=1,signal_stats=stats, md=md)
+    #does not work yet. Future use
     #print(stats.report())
+    #close beam to keep sample safe, set scaler to automode. 
     yield from bps.mv(
         uniblitz_shutter, "close",
         scaler1.count_mode, "AutoCount",
     )
+    #unstage channels on scaler so it does nto get in or way in the future
     scaler1.select_channels(None)
+    # this is example how I plan to use oin the future the statitstics. 
+    # In this case if the analysis is successful, we will record the sample table x axis value record to the position that maximized the signal.
     #if stats.analysis.success:
     #yield from bps.mv(terms.USAXS.mr_val_center, m_stage.r.position)
-    #logger.info(f"final position: {m_stage.r.position}")
+    #logger.info(f"final position: {sample_table.x.position}")
     #else:
-    #    print(f"tune_mr failed for {stats.analysis.reasons}")  
+    #    print(f"align_sa_x failed for {stats.analysis.reasons}")  
     
 def empty_plan(*args, **kwargs):
     logger.info(f"Doing nothing: args={args}, kwargs={kwargs}")
