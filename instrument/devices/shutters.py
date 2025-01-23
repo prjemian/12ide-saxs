@@ -90,7 +90,7 @@ else:
     logger.warning("!"*30)
     FE_shutter = SimulatedApsPssShutterWithStatus(name="FE_shutter")
     mono_shutter = SimulatedApsPssShutterWithStatus(name="mono_shutter")
-    usaxs_shutter = SimulatedApsPssShutterWithStatus(name="usaxs_shutter")
+    uniblitz_shutter = SimulatedApsPssShutterWithStatus(name="usaxs_shutter")
     a_shutter_autoopen = Signal(name="a_shutter_autoopen", value=0)
 
 
