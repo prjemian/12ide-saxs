@@ -4,7 +4,7 @@ example scaler
 
 __all__ = """
     scaler1
-    timebase I01 I02 ITS
+    timebase IC IC2 BS
 """.split()
 
 import logging
@@ -33,9 +33,10 @@ if not len(scaler1.channels.chan01.chname.get()):
         f"{scaler1.name} has no channel names.  Assigning channel names."
     )
     scaler1.channels.chan01.chname.put("timebase")
-    scaler1.channels.chan02.chname.put("I01")
-    scaler1.channels.chan03.chname.put("I02")
-    scaler1.channels.chan04.chname.put("ITS")
+    scaler1.channels.chan02.chname.put("IC")
+    scaler1.channels.chan03.chname.put("IC2")
+    scaler1.channels.chan04.chname.put("BS")
+    scaler1.channels.chan05.chname.put("If")
     time.sleep(1)  # wait for IOC
 
 # choose just the channels with EPICS names
@@ -44,10 +45,10 @@ scaler1.select_channels()
 # examples: make shortcuts to specific channels assigned in EPICS
 
 timebase = scaler1.channels.chan01.s
-I01 = scaler1.channels.chan02.s
-I02 = scaler1.channels.chan03.s
-ITS = scaler1.channels.chan04.s
+IC = scaler1.channels.chan02.s
+IC2 = scaler1.channels.chan03.s
+BS = scaler1.channels.chan04.s
 
 
-for item in (timebase, I01, I02, ITS):
+for item in (timebase, IC, IC2, BS):
     item._ophyd_labels_ = set(["channel", "counter"])
