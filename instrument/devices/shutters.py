@@ -4,7 +4,6 @@ shutters
 """
 
 __all__ = [
-    'ccd_shutter',
     'FE_shutter',
     'mono_shutter',
     'uniblitz_shutter',
