@@ -8,9 +8,6 @@ NOTE:  Don't use blocking calls here
 __all__ = """
     empty_plan
     scan_sa_x
-    tune_dx
-    tune_dy
-    tune_diode
     """.split()
 
 import logging
